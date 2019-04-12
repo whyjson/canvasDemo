@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Generator" content="EditPlus?">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #canvas {
+            background: #000;
+        }
+        body {
+            background: #000;
+        }
+        .canvas {
+            width: 1000px;
+            height: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="canvas">
+    <canvas id="canvas" width="1000" height="1000">
+        你的浏览器不支持canvas,请变更换浏览器！
+    </canvas>
+</div>
+<script>
+    var cxt = document.getElementById("canvas").getContext("2d");
+    //绘制八个轨道
+    function drakTrack() {
+        for (var i = 0; i < 8; i++) {
+            cxt.beginPath();
+            cxt.arc(500, 500, (i + 1) * 50, 0, 360, false);
+            cxt.closePath();
+            cxt.strokeStyle = "#fff";
+            cxt.stroke();
+        }
+    }
+    drakTrack();
+    //绘制星体
+    function star(x, y, radius, cycle, sColor, eColor) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.cycle = cycle;
+        this.sColor = sColor;
+        this.eColor = eColor;
+        this.time = 0;
+        this.color = null;
+        this.draw = function () {
+
+            //保存之北的画布
+            cxt.save();
+            //设置异次圆心
+            cxt.translate(500, 500);
+            //设置星体的旋转角度
+            cxt.rotate(this.time * (360 / this.cycle) * Math.PI / 180);
+            //cxt.rotate(90*Math.PI/180);
+            cxt.beginPath();
+            cxt.arc(this.x, this.y, this.radius, 0, 360, false);
+            cxt.closePath();
+            //设置填充色
+            this.color = cxt.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+            this.color.addColorStop(0, this.sColor);
+            this.color.addColorStop(1, this.eColor);
+            cxt.fillStyle = this.color;
+            cxt.fill();
+            //保存之北的画布
+            cxt.restore();
+            this.time += 1;
+        }
+    }
+    //构造太阳对象方法
+    function sun() {
+        star.call(this, 0, 0, 20, 0, "#f00", "#f90");
+    }
+    //构造水星对象
+    function Mercurry() {
+        star.call(this, 0, -50, 10, 87.7, "#A69067", "#5cE400");
+    }
+    //构造金星对象
+    function venus() {
+        star.call(this, 0, -100, 10, 224.7, "#C4BBAC", "#1F1315");
+    }
+    //构造地球对象
+    function Earth() {
+        star.call(this, 0, -150, 10, 365.24, "#78B1E8", "#5C3E40");
+    }
+    //构造火星对象
+    function Mars() {
+        star.call(this, 0, -200, 10, 686.98, "#CEC9B6", "#76422D");
+    }
+    //构造木星对象
+    function Jupeiter() {
+        star.call(this, 0, -250, 10, 4332.589, "#C0A4BE", "#322222");
+    }
+    //构造土星对象
+    function Satum() {
+        star.call(this, 0, -300, 10, 18759.5, "#F7F9E3", "#5C4533");
+    }
+    //构造天王星对象
+    function Uranus() {
+        star.call(this, 0, -350, 10, 30799.095, "#A7E1E5", "#19243A");
+    }
+    //构造海王星对象
+    function Neptune() {
+        star.call(this, 0, -400, 10, 60152, "#0661B2", "#1E3B73");
+    }
+    //构造太阳对象
+    var sun = new sun();
+    var Mer = new Mercurry();
+    var ven = new venus();
+    var Ear = new Earth();
+    var Mar = new Mars();
+    var jup = new Jupeiter();
+    var Sat = new Satum();
+    var Ura = new Uranus();
+    var Nep = new Neptune();
+    function move() {
+        cxt.clearRect(0, 0, 1000, 1000);
+        drakTrack();
+        sun.draw();
+        Mer.draw();
+        ven.draw();
+        Ear.draw();
+        Mar.draw();
+        jup.draw();
+        Sat.draw();
+        Ura.draw();
+        Nep.draw();
+    }
+    setInterval(move, 10);
+    //steInterval(water.draw(),10)
+</script>
+</body>
+</html>

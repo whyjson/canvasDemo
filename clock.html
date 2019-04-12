@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #canvas{
+            background: white;
+        }
+    </style>
+</head>
+<body bgcolor="#FFFFFF">
+<canvas id="canvas" width="500" height="500"></canvas>
+<script>
+    var ctx = document.querySelector('canvas').getContext("2d");
+    ctx.translate(250,250);
+    drawArc();
+
+    function drawArc(){
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(0, 0, 200, 0, 2*Math.PI, true);
+        ctx.closePath();
+        ctx.stroke();
+    }
+    function drawArc2(r){
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, 2*Math.PI, true);
+        ctx.closePath();
+        ctx.fillStyle="white";
+        ctx.fill();
+    }
+
+    function drawPan(){
+        for(var j=0;j<=59;j++){
+            drawMinP();
+        }
+        drawArc2(190);
+        for(var i=0;i<=11;i++){
+            drawHourP();
+
+        }
+        drawArc2(180);
+    }
+    for(var j=0;j<=59;j++){
+        drawMinP();
+    }
+    drawArc2(190);
+    for(var i=0;i<=11;i++){
+        drawHourP();
+
+    }
+    drawArc2(180);
+    function drawMinP(){
+        ctx.lineWidth = 1;
+        ctx.rotate(Math.PI*(6/180));
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(0,200);
+        ctx.closePath();
+        ctx.stroke();
+    }
+    function drawHourP(){
+        ctx.lineWidth = 5;
+        ctx.rotate(Math.PI*(30/180));
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(0,200);
+        ctx.closePath();
+        ctx.stroke();
+
+    }
+    function gogogo(){
+        ctx.clearRect(-250,-250,500,500);
+        drawArc();
+        drawPan();
+        drawMin();
+        drawHour();
+        drawSec();
+
+    }
+    drawMin();
+    drawHour();
+    drawSec();
+    function drawMin(){
+        ctx.save();
+        var time=new Date();
+        var angle=(time.getMinutes()+time.getSeconds()/60)/60*360;
+        console.log(angle);
+        ctx.lineWidth = 3;
+        ctx.rotate(Math.PI*(angle/180-1),false);
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(0,150);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.rotate(Math.PI*(360-angle/180));
+        ctx.restore();
+    }
+    function drawHour(){
+        ctx.save();
+        var time=new Date();
+        var angle=(time.getHours()+time.getMinutes()/60)%12/12*360;
+        ctx.lineWidth = 5;
+        ctx.rotate(Math.PI*(angle/180-1),false);
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(0,100);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.rotate(Math.PI*(360-angle/180));
+        ctx.restore();
+    }
+    function drawSec(){
+        ctx.save();
+        var time=new Date();
+        var angle=time.getSeconds()/60*360;
+        console.log(angle);
+        ctx.lineWidth = 0.5;
+        ctx.rotate(Math.PI*(angle/180-1),false);
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.lineTo(0,200);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.rotate(Math.PI*(360-angle/180));
+        ctx.restore();
+    }
+    setInterval(gogogo,1000);
+</script>
+</body>
+</html>
